@@ -11,7 +11,7 @@ const store = createStore({
     },
     mutations: {
         setUser(state, payload) {
-            state.user.userNo = payload
+            state.user.userNo = payload;
         }
     }
 })

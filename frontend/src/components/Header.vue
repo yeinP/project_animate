@@ -7,9 +7,9 @@
         <div class="col-4 text-center">
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
-          <router-link to="/login" class="btn btn-sm" v-if="!$store.state.user.userNo">로그인</router-link>
-          <a to="/login" class="btn btn-sm" @click="logout()" v-else>로그아웃</a>
-          <a class="btn btn-sm" href="#" v-if="!$store.state.user.userNo">회원가입</a>
+          <router-link to="/login" class="btn btn-sm" v-if="!userNo">로그인</router-link>
+          <router-link to="/register/step1" class="btn btn-sm" v-if="!userNo">회원가입</router-link>
+          <router-link to="/login" class="btn btn-sm" @click="logout" v-else>로그아웃</router-link>
         </div>
       </div>
       <div class="siteTitle">
@@ -22,8 +22,8 @@
       <nav class="nav nav-underline justify-content-between">
         <a class="nav-item nav-link link-body-emphasis active" href="#">Animate 소개</a>
         <a class="nav-item nav-link link-body-emphasis" href="/sheltersInfo">보호소 찾기</a>
-        <a class="nav-item nav-link link-body-emphasis" href="#">실종/제보</a>
-        <a class="nav-item nav-link link-body-emphasis" href="#">입양</a>
+        <a class="nav-item nav-link link-body-emphasis" href="/animal/miss_care">실종/제보</a>
+        <a class="nav-item nav-link link-body-emphasis" href="/adoption">입양</a>
         <a class="nav-item nav-link link-body-emphasis active" href="#">입양후기</a>
       </nav>
     </div>
@@ -34,16 +34,23 @@
 <script>
 import router from "@/scrpits/router";
 import store from "@/scrpits/store";
+import {onMounted, ref} from "vue";
 
 export default {
   name: 'Header',
   setup(){
+    const userNo = ref(store.state.user.userNo);
     const logout =() => {
       store.commit('setUser', 0);
       sessionStorage.removeItem("userNo");
       router.push({path:'/'})
     }
-    return {logout}
+    onMounted(()=>{
+      store.watch(()=> store.state.user.userNo,(newValue) =>{
+        userNo.value = newValue;
+      });
+    });
+    return {userNo,logout}
   }
 }
 </script>

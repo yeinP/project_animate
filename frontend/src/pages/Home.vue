@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="mb-4 rounded text-body-emphasis bg-body-secondaryy">
-
       <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -299,12 +298,7 @@
 
 export default {
   name: "Home",
-  // setup(){
-  //   axios.get("/animate/api/shelters").then((res)=>{
-  //     console.log(res);
-  //   })
-  //
-  // }
+
 }
 
 </script>
