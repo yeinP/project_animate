@@ -70,7 +70,7 @@ export default {
     //api 정보가져옴
     async fetchSheltersData() {
       try {
-        const response = await fetch('http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo?numOfRows=194&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
+        const response = await axios.get('http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo?numOfRows=194&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
         const xmlData = await response.text();
 
         const parser = new DOMParser();

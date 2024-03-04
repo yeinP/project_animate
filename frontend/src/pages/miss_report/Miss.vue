@@ -2,66 +2,140 @@
 <div class="container">
   <div class="album py-5">
     <div class="writeMissBtn">
-    <button @click="toggleModal" class="miss-btn">실종/보호 신고</button>
+      <div class="uploadBtn">
+      <button @click="toggleModal" class="miss-btn"> <i class="fa fa-bullhorn" aria-hidden="true"></i>실종/목격 신고</button>
+      </div>
       <div v-if="showModal" class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSheet">
         <div class="modal-dialog" role="document">
           <div class="modal-content rounded-4 shadow">
             <div class="modal-header border-bottom-0">
               <div class="title">
-              <h1 class="modal-title fs-5">실종/보호 신고</h1>
+              <h1 class="modal-title fs-5">실종/목격 신고</h1>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  @click="closeModal"></button>
             </div>
-            <div class="line">
-              <span>기본 정보</span>
+            <div>
+              <div class="line">
+                <span>기본 정보</span>
+              </div>
+              <div class="selectedOption">
+                <span class="req" style="margin-right: 0;">*</span><span>상태</span>
+                <select v-model="mcStatus" class="selectedStatusOption">
+                  <option value="1">실종</option>
+                  <option value="2">제보</option>
+                  <option value="3">완료</option>
+                </select>
+                <span style="color: orangered"> * 상황이 종료돈 후에는 완료로 수정해주세요.</span>
+              </div>
+              <div class="mcLoc">
+                <span class="req" style="margin-right: 0;">*</span><span>지역</span>
+                <select v-model="selectedLocOption1" ref="selectedLocOption1" @change="updateSecondOptions" class="selectedLocOption1">
+                  <option value="allLoc">모든 지역</option>
+                  <option value="gg">경기도</option>
+                  <option value="daegu">대구광역시</option>
+                  <option value="daejeon">대전광역시</option>
+                  <option value="sejong">세종특별자치</option>
+                  <option value="incheon">인천광역시</option>
+                  <option value="jeonnam">전라남도</option>
+                  <option value="kangwon">강원도</option>
+                  <option value="ulsan">울산광역시</option>
+                  <option value="jeonbuk">전라북도</option>
+                  <option value="chungnam">충청남도</option>
+                  <option value="jeju">제주특별자치도</option>
+                  <option value="keongnam">경상남도</option>
+                  <option value="keongbuk">경상북도</option>
+                  <option value="chungbuk">충청북도</option>
+                  <option value="gwangju">광주광역시</option>
+                  <option value="busan">부산광역시</option>
+                </select>
+                <select v-model="selectedLocOption2" class="selectedLocOption2">
+                  <option v-for="district in selectedDistricts" :key="district">{{ district }}</option>
+                </select>
+              </div>
+              <div class="mcAddr">
+                <span style="margin-left: 8px;">장소</span>
+                <input type="text" v-model="mcAddr" placeholder="구체적인 장소를 적어주세요">
+              </div>
+              <div class="line">
+                <span>동물 정보</span>
+              </div>
+              <div class="breed">
+                <span>품종</span>
+                <input type="radio" v-model="mcBreed" value="모든 동물" name="Breed"> <span>모든 동물</span>
+                <input type="radio" v-model="mcBreed" value="고양이" name="Breed"> <span>고양이</span>
+                <input type="radio" v-model="mcBreed" value="강아지" name="Breed"> <span>강아지</span>
+              </div>
+
+              <div class="gender">
+                <span>성별</span>
+                <input type="radio" v-model="mcGender" value="미확인" name="gender"> <span>미확인</span>
+                <input type="radio" v-model="mcGender" value="수컷" name="gender"> <span>수컷</span>
+                <input type="radio" v-model="mcGender" value="암컷" name="gender"> <span>암컷</span>
+              </div>
+              <div class="ageWeight">
+                <div class="age">
+                  <span>나이</span>
+                  <select v-model="mcAge">
+                    <option value="99">미확인</option>
+                    <option value="0">1살 이하</option>
+                    <option value="1">1살</option>
+                    <option value="2">2살</option>
+                    <option value="3">3살</option>
+                    <option value="4">4살</option>
+                    <option value="5">5살</option>
+                    <option value="6">6살</option>
+                    <option value="7">7살</option>
+                    <option value="8">8살</option>
+                    <option value="9">9살</option>
+                    <option value="10">10살</option>
+                    <option value="11">10살 이상</option>
+                  </select>
+                </div>
+
+                <div class="weight">
+                  <span>몸무게</span>
+                  <select v-model="mcWeight">
+                    <option value="99">미확인</option> <option value="0">1kg 미만</option> <option value="1">1kg</option>
+                    <option value="2">2kg</option> <option value="3">3kg</option> <option value="4">4kg</option>
+                    <option value="5">5kg</option> <option value="6">6kg</option> <option value="7">7kg</option>
+                    <option value="8">8kg</option> <option value="9">9kg</option> <option value="10">10kg</option>
+                    <option value="11">11kg</option> <option value="12">12kg</option>  <option value="13">13kg</option>
+                    <option value="14">14kg</option> <option value="15">15kg</option>  <option value="16">16kg</option>
+                    <option value="17">17kg</option> <option value="18">18kg</option>  <option value="19">19kg</option>
+                    <option value="20">20kg</option> <option value="21">21kg</option>  <option value="22">22kg</option>
+                    <option value="23">23kg</option> <option value="24">24kg</option>  <option value="25">25kg</option>
+                    <option value="26">20kg</option> <option value="27">27kg</option>  <option value="28">28kg</option>
+                    <option value="29">20kg</option> <option value="30">30kg</option>  <option value="31">30kg 이상</option>
+                  </select>
+                </div>
+              </div>
+              <div class="color">
+                <span>털색</span>
+                <input type="text" placeholder="털색을 설명해주세요" v-model="mcColor">
+              </div>
+              <div class="char">
+                <span>특징</span>
+                <input type="text" placeholder="특징을 작성해주세요" v-model="mcChar">
+              </div>
+              <div class="etc">
+                <span>기타</span>
+                <input type="text" placeholder="기타사항을 입력해주세요" v-model="mcEtc">
+              </div>
             </div>
-            <div class="selectedOption">
-              <span>상태</span>
-              <select v-model="selectedOption" class="selectedStatusOption">
-                <option value="1">실종</option>
-                <option value="2">제보</option>
-                <option value="3">완료</option>
-              </select>
-              <span style="color: orangered"> * 상황이 종료돈 후에는 완료로 수정해주세요.</span>
-            </div>
-            <div class="mcLoc">
-              <span>지역</span>
-              <select v-model="selectedLocOption1" @change="updateSecondOptions" class="selectedLocOption1">
-                <option value="allLoc">모든 지역</option>
-                <option value="gg">경기도</option>
-                <option value="daegu">대구광역시</option>
-                <option value="daejeon">대전광역시</option>
-                <option value="sejong">세종특별자치</option>
-                <option value="incheon">인천광역시</option>
-                <option value="jeonnam">전라남도</option>
-                <option value="kangwon">강원도</option>
-                <option value="ulsan">울산광역시</option>
-                <option value="jeonbuk">전라북도</option>
-                <option value="chungnam">충청남도</option>
-                <option value="jeju">제주특별자치도</option>
-                <option value="keongnam">경상남도</option>
-                <option value="keongbuk">경상북도</option>
-                <option value="chungbuk">충청북도</option>
-                <option value="gwangju">광주광역시</option>
-                <option value="busan">부산광역시</option>
-              </select>
-              <select v-model="selectedLocOption2" class="selectedLocOption2">
-                <option v-for="district in selectedDistricts" :key="district">{{ district }}</option>
-              </select>
-            </div>
-            <div class="mcAddr">
-              <span>장소</span>
-              <input type="text" v-model="mcContent" placeholder="구체적인 장소를 적어주세요">
-            </div>
-            <div class="modal-body py-0" style="grid-template-rows: 0.5fr 0.5fr 2fr;">
-              <input type="file" ref="fileInput" @change="handleFileChange" multiple />
+            <div class="modal-body py-0" >
+              <div>
+                <label for="fileInput" class="custom-file-upload">
+                  <i class="fa fa-cloud-upload"></i> <span>파일 선택</span>
+                </label>
+                <span style="margin-left: 0.5rem; font-size: 15px">(사진은 1개 이상 최대 3개까지 선택해주세요.)</span>
+                <input id="fileInput" ref="fileInput" type="file" @change="handleFileChange" style="display: none;"  multiple/>
+              </div>
               <div  class="selected-images-container">
                 <div v-for="(file, index) in selectedFiles" :key="index" class="selected-image">
                   <img :src="file.preview" alt="Selected Image" style="max-width: 100px; max-height: 100px; margin-right: 10px;" />
                   <button @click="removeImage(index)" class="remove-image-button">X</button>
                 </div>
               </div>
-              <textarea v-model="mcContent" ></textarea>
             </div>
             <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
               <div class="d-flex justify-content-end">
@@ -73,12 +147,15 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col" v-for="i in 12" :key="i">
-        <MissCard/>
-        </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <div class="col" v-for="missCare in paginatedMissCareList" :key="missCare.mcNo">
+        <MissCard :missCare="missCare"/>
       </div>
+    </div>
+    <div class="pagination d-flex justify-content-center" >
+      <button @click="prevPage" :disabled="currentPage === 1"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+      <span v-for="page in totalPages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }" style="margin: 0 5px 0 5px; cursor: pointer">{{ page }}</span>
+      <button @click="nextPage" :disabled="currentPage * itemsPerPage >= missCareList.length"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
     </div>
   </div>
 
@@ -90,19 +167,44 @@
 
 import MissCard from "@/components/MissCard.vue";
 import axios from "axios";
+import {onMounted, ref} from "vue";
+import store from "@/scrpits/store";
+import router from "@/scrpits/router";
+
+
 
 export default {
   name:"Miss",
   components: {MissCard},
+  setup(){
+    const userNo = ref(store.state.user.userNo);
+    onMounted(()=>{
+      store.watch(()=> store.state.user.userNo,(newValue) =>{
+        userNo.value = newValue;
+      });
+    });
+    return { userNo };
+  },
   data() {
     return {
+      missCareList:[],
+      currentPage: 1,
+      itemsPerPage: 9,
+      totalPages:0,
       showModal: false,
-      missContent: "",
-      selectedFiles: null,
+      selectedFiles: [],
       selectedOption: '1',
       selectedLocOption1: 'allLoc',
       selectedLocOption2: '전체',
+      mcGender:"미확인",
+      mcBreed:"모든 동물",
+      mcAge:"99",
+      mcWeight:"99",
       mcAddr:"",
+      mcStatus:"0",
+      mcColor:"",
+      mcChar:"",
+      mcEtc:"",
       allLoc:['전체'],
       gg : ['고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시',
           '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시',
@@ -169,40 +271,105 @@ export default {
       ],
    };
   },
+  mounted() {
+    this.getMissCareDtoList();
+  },
   computed:{
     selectedDistricts() {
       return this[this.selectedLocOption1] || [];
     },
+    paginatedMissCareList() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.missCareList.slice(start, end);
+    },
   },
   methods:{
+    nextPage() {
+      if (this.currentPage * this.itemsPerPage < this.missCareList.length) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    getMissCareDtoList(){
+      axios.get('http://localhost:9090/animal/miss_care')
+          .then((response) => {
+            this.missCareList = response.data;
+            this.totalPages = Math.ceil(this.missCareList.length / this.itemsPerPage);
+
+            if (this.currentPage > this.totalPages) {
+              this.currentPage = this.totalPages;
+            }
+          })
+          .catch((error) => {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+          });
+    },
     updateSecondOptions() {
       this.selectedLocOption2 = "";
     },
     upload(){
-      const formData = new FormData();
-      const files = this.$refs.fileInput.files;
+      const uploadconfirm = confirm("작성하시겠습니까?")
+      if(uploadconfirm == true){
+        const formData = new FormData();
+        const files = this.$refs.fileInput.files;
 
-      for (let i = 0; i < files.length; i++) {
-        formData.append('files', files[i]);
+        if (files.length > 0) {
+          for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+          }
+        } else {
+          alert("사진을 1장 이상 추가해주세요.");
+          return ;
+        }
+        const selectedLocText1 = this.$refs.selectedLocOption1.options[this.$refs.selectedLocOption1.selectedIndex].text;
+        const mcLoc = `${selectedLocText1} ${this.selectedLocOption2}`;
+        formData.append('mcLoc', mcLoc);
+        formData.append('mcStatus', this.mcStatus);
+        formData.append('mcBreed', this.mcBreed);
+        formData.append('mcGender', this.mcGender);
+        formData.append('mcAge', this.mcAge);
+        formData.append('mcWeight', this.mcWeight);
+        formData.append('mcColor', this.mcColor);
+        formData.append('mcChar', this.mcChar);
+        formData.append('mcEtc', this.mcEtc);
+        formData.append('mcAddr', this.mcAddr);
+
+
+        axios.post('/animate/upload/mcAnimal', formData)
+            .then(response => {
+              window.alert("작성완료되었습니다.")
+              this.$router.push({ path: '/animal/miss_care'}).then(() => {
+                window.location.reload();
+              })
+              console.log(response);
+            })
+            .catch(error => {
+              // Handle the error if needed
+              console.error(error);
+            });
+
+      } else{
+        return false;
       }
-      const selectedLocText1 = this.$refs.selectedLocOption1.options[this.$refs.selectedLocOption1.selectedIndex].text;
-      const mcAddr = `${selectedLocText1} ${this.selectedLocOption2}`;
-      formData.append('mcAddr', mcAddr);
-      formData.append('mcStatus', this.selectedOptions);
-      console.log(mcAddr);
 
-      axios.post('/animate/upload/mcAnimal', formData)
-          .then(response => {
-            // Handle the response if needed
-            console.log(response);
-          })
-          .catch(error => {
-            // Handle the error if needed
-            console.error(error);
-          });
     },
     toggleModal() {
+      if (!this.userNo) {
+        alert("로그인 후 작성 가능합니다.")
+        router.push({path: '/login'})
+      } else{
       this.showModal = !this.showModal;
+      }
     },
     closeModal() {
       const check = confirm("작성을 취소하시겠습니까?");
@@ -215,6 +382,10 @@ export default {
     },
     handleFileChange(event) {
       const filesArray = Array.from(event.target.files);
+      if (filesArray.length > 3) {
+        alert('사진 선택은 최대 3장까지 가능합니다.');
+        return;
+      }
       this.selectedFiles = filesArray;
       for (let i = 0; i < this.selectedFiles.length; i++) {
         const reader = new FileReader();
@@ -237,6 +408,7 @@ export default {
 
   },
 
+
 }
 
 </script>
@@ -252,11 +424,11 @@ export default {
 }
 
 .modal-content{
-  height: 600px;
+  height: 100%;
 }
 
 .modal-dialog{
-  max-width:800px;
+  max-width:600px;
 }
 .modal-body{
   display: grid;
@@ -278,27 +450,22 @@ export default {
   margin:3px;
 }
 
-.selectedOption{
+.selectedOption, .mcAddr, .mcLoc{
   padding: 0.5rem 1rem;
 }
-.selectedOption span, .selectedOption select{
-  margin-right: 0.5rem;
-}
+
 .mcLoc option{
   width: 125px;
   text-align: center;
 }
-.mcAddr, .mcLoc{
-  padding: 0.5rem 1rem;
-}
-
-.mcAddr span, .mcLoc span{
-  margin-right: 0.5rem;
+.selectedOption span, .selectedOption select, .mcAddr span, .mcLoc span{
+  margin-right: 1rem;
 }
 .mcAddr input{
   width: 250px;
 }
 .line{
+  border-radius: inherit;
   text-align: center;
   color: #6b6b6b;
   background-color: #dedd657a;
@@ -320,4 +487,63 @@ export default {
   text-align: center;
   width: 125px;
 }
+.gender, .age, .weight, .breed, .color, .etc, .char{
+  padding: 0.5rem 1.4rem;
+}
+.gender span, .age span, .weight span, .breed span, .color span, .etc span, .char span{
+  margin-right:1rem;
+}
+.ageWeight{
+  display: flex;
+  align-items: center;
+}
+
+.color input, .etc input {
+  width: 400px;
+}
+.custom-file-upload {
+  margin-top:2px;
+
+  display: inline-block;
+  cursor: pointer;
+}
+.req{
+  color: red;
+  margin-right: 0;
+}
+
+.custom-file-upload{
+  margin-left: 0.5rem;
+
+}
+
+
+.miss-btn i{
+  margin-right: 0.5rem;
+}
+.uploadBtn{
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 0 0 0.5rem;
+}
+
+.miss-btn{
+  width: 180px;
+  height: 35px;
+  background-color: rgba(205, 205, 103, 1);
+  border: 0;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.pagination{
+  margin-top: 1rem;
+}
+
+.pagination button{
+ background-color: white;
+  border: white;
+}
+
 </style>

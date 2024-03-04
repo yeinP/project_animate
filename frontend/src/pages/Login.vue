@@ -17,7 +17,10 @@
           Remember me
         </label>
       </div>
-      <button class="btn btn-primary w-100 py-2" @click="submit()">로그인</button>
+      <div class="btnBox">
+        <button class="btn btn-primary w-100 py-2" @click="submit()">로그인</button>
+        <router-link to="/register/step1" class="btn w-100 py-2 register">회원가입</router-link>
+      </div>
   </div>
 </template>
 
@@ -81,6 +84,20 @@ export default {
   border-color: #cfce5e;
   --bs-btn-hover-bg: #dedd65;
   --bs-btn-hover-border-color: #dedd65;
+
+}
+
+.btnBox button{
+  margin-bottom: 0.3rem;
+}
+
+.register{
+  background-color: #b0b0ad;
+  border-color: #b0b0ad;
+  --bs-btn-hover-bg: #949292;
+  --bs-btn-hover-border-color: #949292;
+  color: white;
+  --bs-btn-hover-color:white;
 
 }
 </style>
